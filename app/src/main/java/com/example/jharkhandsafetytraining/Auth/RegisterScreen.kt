@@ -1,7 +1,6 @@
 package com.example.jharkhandsafetytraining.auth
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -9,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.text.KeyboardOptions
 
 @Composable
 fun RegisterScreen(
@@ -48,7 +48,7 @@ fun RegisterScreen(
         OutlinedTextField(
             value = pin,
             onValueChange = { if (it.length <= 4 && it.all(Char::isDigit)) pin = it },
-            label = { Text("Choose a 4-digit PIN") },
+            label = { Text("Create 4-digit PIN") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
             visualTransformation = PasswordVisualTransformation(),
             singleLine = true,
@@ -62,7 +62,7 @@ fun RegisterScreen(
 
         Spacer(Modifier.height(20.dp))
         Button(
-            onClick = { viewModel.register(name, phone, pin, onRegistered) },
+            onClick = { viewModel.register(name, phone, pin, "en", onRegistered) },
             enabled = !viewModel.isLoading,
             modifier = Modifier.fillMaxWidth()
         ) { Text(if (viewModel.isLoading) "Please wait..." else "Register") }
@@ -70,6 +70,6 @@ fun RegisterScreen(
         TextButton(onClick = {
             viewModel.clearError()
             onBackToLogin()
-        }) { Text("Already registered? Login") }
+        }) { Text("Already have an account? Login") }
     }
 }

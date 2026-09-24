@@ -22,37 +22,53 @@ class AuthViewModel(app: Application) : AndroidViewModel(app) {
     var errorMessage by mutableStateOf<String?>(null)
         private set
 
-    fun isLoggedIn(): Boolean = session.isLoggedIn()
+    fun isLoggedIn(): Boolean = session.getUserId() != null
 
-    fun clearError() { errorMessage = null }
-
-    fun register(name: String, phone: String, pin: String, onSuccess: () -> Unit) {
+    fun login(phone: String, pin: String, onSuccess: () -> Unit) {
+        errorMessage = null
+        if (phone.length != 10 || pin.length != 4) {
+            errorMessage = "Enter a valid 10-digit phone and 4-digit PIN"
+            return
+        }
+        isLoading = true
         viewModelScope.launch {
-            isLoading = true
-            errorMessage = null
-            when (val result = repo.register(name, phone, pin, session.language())) {
+            when (val result = repo.login(phone, pin)) {
                 is AuthResult.Success -> {
-                    session.saveLogin(result.user.id, result.user.role, result.user.language)
+                    session.saveUserId(result.user.id)
+                    isLoading = false
                     onSuccess()
                 }
-                is AuthResult.Error -> errorMessage = result.message
+                is AuthResult.Failure -> {
+                    isLoading = false
+                    errorMessage = result.message
+                }
             }
-            isLoading = false
         }
     }
 
-    fun login(phone: String, pin: String, onSuccess: () -> Unit) {
+    fun register(name: String, phone: String, pin: String, language: String, onSuccess: () -> Unit) {
+        errorMessage = null
+        if (name.isBlank() || phone.length != 10 || pin.length != 4) {
+            errorMessage = "Fill all fields correctly"
+            return
+        }
+        isLoading = true
         viewModelScope.launch {
-            isLoading = true
-            errorMessage = null
-            when (val result = repo.login(phone, pin)) {
+            when (val result = repo.register(name, phone, pin, language)) {
                 is AuthResult.Success -> {
-                    session.saveLogin(result.user.id, result.user.role, result.user.language)
+                    session.saveUserId(result.user.id)
+                    isLoading = false
                     onSuccess()
                 }
-                is AuthResult.Error -> errorMessage = result.message
+                is AuthResult.Failure -> {
+                    isLoading = false
+                    errorMessage = result.message
+                }
             }
-            isLoading = false
         }
+    }
+
+    fun clearError() {
+        errorMessage = null
     }
 }

@@ -25,5 +25,5 @@ object PinHasher {
         bytes.joinToString("") { "%02x".format(it) }
 
     private fun fromHex(hex: String): ByteArray =
-        ByteArray(hex.length / 2) { hex.substring(it * 2, it * 2 + 2).toInt(16) }
+        ByteArray(hex.length / 2) { hex.substring(it * 2, it * 2 + 2).toInt(16).toByte() }
 }

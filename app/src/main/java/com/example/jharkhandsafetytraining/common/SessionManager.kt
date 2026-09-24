@@ -1,33 +1,26 @@
 package com.example.jharkhandsafetytraining.common
 
 import android.content.Context
+import androidx.core.content.edit
 
 class SessionManager(context: Context) {
 
-    private val prefs =
-        context.applicationContext.getSharedPreferences("session", Context.MODE_PRIVATE)
+    private val prefs = context.getSharedPreferences("session_prefs", Context.MODE_PRIVATE)
 
-    fun saveLogin(userId: Long, role: String, language: String) {
-        prefs.edit()
-            .putLong("user_id", userId)
-            .putString("role", role)
-            .putString("language", language)
-            .apply()
+    fun saveUserId(userId: Long) {
+        prefs.edit { putLong(KEY_USER_ID, userId) }
     }
 
-    fun isLoggedIn(): Boolean = prefs.getLong("user_id", -1L) != -1L
-
-    fun userId(): Long = prefs.getLong("user_id", -1L)
-
-    fun role(): String = prefs.getString("role", "WORKER") ?: "WORKER"
-
-    fun language(): String = prefs.getString("language", "en") ?: "en"
-
-    fun setLanguage(lang: String) {
-        prefs.edit().putString("language", lang).apply()
+    fun getUserId(): Long? {
+        val id = prefs.getLong(KEY_USER_ID, -1L)
+        return if (id == -1L) null else id
     }
 
-    fun logout() {
-        prefs.edit().clear().apply()
+    fun clearSession() {
+        prefs.edit { remove(KEY_USER_ID) }
+    }
+
+    companion object {
+        private const val KEY_USER_ID = "user_id"
     }
 }
