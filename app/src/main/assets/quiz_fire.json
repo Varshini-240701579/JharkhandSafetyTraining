@@ -1,0 +1,26 @@
+{
+  "moduleId": "FIRE",
+  "version": 1,
+  "passPercent": 50,
+  "questions": [
+    {
+      "id": "fire_1",
+      "text": { "en": "What should you do first when you hear the fire alarm?", "hi": "", "sat": "" },
+      "options": [
+        { "en": "Continue working", "hi": "", "sat": "" },
+        { "en": "Stop work and go to the assembly point", "hi": "", "sat": "" },
+        { "en": "Look for the fire", "hi": "", "sat": "" }
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "fire_2",
+      "text": { "en": "Which exit should you use during a fire?", "hi": "", "sat": "" },
+      "options": [
+        { "en": "The lift", "hi": "", "sat": "" },
+        { "en": "The nearest marked emergency exit", "hi": "", "sat": "" }
+      ],
+      "correctIndex": 1
+    }
+  ]
+}
