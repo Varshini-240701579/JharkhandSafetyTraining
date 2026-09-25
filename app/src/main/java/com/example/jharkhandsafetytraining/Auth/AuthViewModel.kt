@@ -38,7 +38,7 @@ class AuthViewModel(app: Application) : AndroidViewModel(app) {
                     isLoading = false
                     onSuccess()
                 }
-                is AuthResult.Failure -> {
+                is AuthResult.Error -> {
                     isLoading = false
                     errorMessage = result.message
                 }
@@ -60,7 +60,7 @@ class AuthViewModel(app: Application) : AndroidViewModel(app) {
                     isLoading = false
                     onSuccess()
                 }
-                is AuthResult.Failure -> {
+                is AuthResult.Error -> {
                     isLoading = false
                     errorMessage = result.message
                 }
