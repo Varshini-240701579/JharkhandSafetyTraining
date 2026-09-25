@@ -9,13 +9,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 val safetyModules = listOf(
-    "Fire & Explosion" to "MOD_FIRE",
-    "Gas Leak" to "MOD_GAS",
-    "Mine Collapse" to "MOD_COLLAPSE",
-    "Flooding" to "MOD_FLOOD",
-    "Oxygen Depletion" to "MOD_OXYGEN",
-    "Machinery Safety" to "MOD_MACHINERY",
-    "PPE Compliance" to "MOD_PPE"
+    "Fire & Explosion" to "FIRE",
+    "Gas Leak" to "GAS",
+    "Mine Collapse" to "COLLAPSE",
+    "Flooding" to "FLOOD",
+    "Oxygen Depletion" to "OXYGEN",
+    "Machinery Safety" to "MACHINERY",
+    "PPE Compliance" to "PPE"
 )
 
 @OptIn(ExperimentalMaterial3Api::class)

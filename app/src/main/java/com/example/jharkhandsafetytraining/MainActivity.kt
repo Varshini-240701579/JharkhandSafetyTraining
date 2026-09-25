@@ -73,6 +73,23 @@ class MainActivity : ComponentActivity() {
                             }
                         )
                     }
+
+                    composable(
+                        route = "quiz/{moduleId}",
+                        arguments = listOf(navArgument("moduleId") { type = NavType.StringType })
+                    ) { backStackEntry ->
+                        val moduleId = backStackEntry.arguments?.getString("moduleId") ?: ""
+                        QuizScreen(
+                            moduleId = moduleId,
+                            userLanguage = "hi", // Reads Hindi by default, or "en"/"sat"
+                            onQuizPassed = { score, total ->
+                                navController.popBackStack("home", inclusive = false)
+                            },
+                            onBackToModule = {
+                                navController.popBackStack()
+                            }
+                        )
+                    }
                 }
             }
         }

@@ -5,20 +5,48 @@
   "questions": [
     {
       "id": "fire_1",
-      "text": { "en": "What should you do first when you hear the fire alarm?", "hi": "", "sat": "" },
+      "text": {
+        "en": "What should you do first when you hear the fire alarm?",
+        "hi": "आग का अलार्म सुनते ही आपको सबसे पहले क्या करना चाहिए?",
+        "sat": "ᱥᱮᱸᱜᱮᱞ ᱨᱮᱱᱟᱜ ᱜᱷᱟᱹᱱᱴᱤ ᱟᱸᱡᱚᱢ ᱠᱟᱛᱮ ᱡᱚᱛᱚ ᱠᱷᱚᱱ ᱢᱟᱲᱟᱝ ᱨᱮ ᱪᱮᱫ ᱠᱟᱹᱢᱤ ᱞᱟᱹᱠᱛᱤᱭᱟ?"
+      },
       "options": [
-        { "en": "Continue working", "hi": "", "sat": "" },
-        { "en": "Stop work and go to the assembly point", "hi": "", "sat": "" },
-        { "en": "Look for the fire", "hi": "", "sat": "" }
+        {
+          "en": "Continue working",
+          "hi": "काम जारी रखें",
+          "sat": "ᱠᱟᱹᱢᱤ ᱛᱚᱝᱜᱮ ᱫᱚᱦᱚᱭ ᱢᱮ"
+        },
+        {
+          "en": "Stop work and go to the assembly point",
+          "hi": "काम रोकें और आपातकालीन सभा स्थल (Assembly Point) पर जाएं",
+          "sat": "ᱠᱟᱹᱢᱤ ᱵᱚᱸᱫᱽ ᱠᱟᱛᱮ ᱡᱟᱣᱨᱟᱜ ᱴᱷᱟᱶ ᱛᱮ ᱪᱟᱞᱟᱜ ᱢᱮ"
+        },
+        {
+          "en": "Look for the fire",
+          "hi": "आग की तलाश करें",
+          "sat": "ᱥᱮᱸᱜᱮᱞ ᱯᱟᱱᱛᱮᱭ ᱢᱮ"
+        }
       ],
       "correctIndex": 1
     },
     {
       "id": "fire_2",
-      "text": { "en": "Which exit should you use during a fire?", "hi": "", "sat": "" },
+      "text": {
+        "en": "Which exit should you use during a fire?",
+        "hi": "आग लगने के दौरान आपको किस निकास का उपयोग करना चाहिए?",
+        "sat": "ᱥᱮᱸᱜᱮᱞ ᱞᱟᱜᱟᱣ ᱚᱠᱛᱚ ᱚᱠᱟ ᱰᱟᱦᱟᱨ ᱛᱮ ᱚᱰᱚᱠ ᱞᱟᱹᱠᱛᱤᱭᱟ?"
+      },
       "options": [
-        { "en": "The lift", "hi": "", "sat": "" },
-        { "en": "The nearest marked emergency exit", "hi": "", "sat": "" }
+        {
+          "en": "The lift",
+          "hi": "लिफ्ट",
+          "sat": "ᱞᱤᱯᱷᱴ"
+        },
+        {
+          "en": "The nearest marked emergency exit",
+          "hi": "निकटतम आपातकालीन निकास",
+          "sat": "ᱡᱚᱛᱚ ᱠᱷᱚᱱ ᱥᱩᱨ ᱨᱮᱱᱟᱜ ᱵᱟᱧᱪᱟᱣ ᱰᱟᱦᱟᱨ"
+        }
       ],
       "correctIndex": 1
     }
