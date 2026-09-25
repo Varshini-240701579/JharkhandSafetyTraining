@@ -1,0 +1,57 @@
+{
+  "moduleId": "MACHINERY",
+  "version": 1,
+  "passPercent": 50,
+  "questions": [
+    {
+      "id": "machinery_1",
+      "text": { "en": "Before operating machinery, you should:", "hi": "", "sat": "" },
+      "options": [
+        { "en": "Check that guards and safety covers are in place", "hi": "", "sat": "" },
+        { "en": "Start it immediately", "hi": "", "sat": "" },
+        { "en": "Remove the safety guard for better speed", "hi": "", "sat": "" }
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "machinery_2",
+      "text": { "en": "Loose clothing near moving machinery is:", "hi": "", "sat": "" },
+      "options": [
+        { "en": "Safe if tucked in slightly", "hi": "", "sat": "" },
+        { "en": "A serious entanglement hazard", "hi": "", "sat": "" },
+        { "en": "Not a concern", "hi": "", "sat": "" }
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "machinery_3",
+      "text": { "en": "What should you do if a machine makes an unusual noise?", "hi": "", "sat": "" },
+      "options": [
+        { "en": "Continue operating it", "hi": "", "sat": "" },
+        { "en": "Stop and report it before continuing", "hi": "", "sat": "" },
+        { "en": "Increase the speed to check", "hi": "", "sat": "" }
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "machinery_4",
+      "text": { "en": "Who is allowed to operate heavy machinery?", "hi": "", "sat": "" },
+      "options": [
+        { "en": "Anyone available at the time", "hi": "", "sat": "" },
+        { "en": "Only trained and authorized workers", "hi": "", "sat": "" },
+        { "en": "Only the newest worker", "hi": "", "sat": "" }
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "machinery_5",
+      "text": { "en": "Before cleaning or repairing a machine, you should:", "hi": "", "sat": "" },
+      "options": [
+        { "en": "Switch it off and lock it out", "hi": "", "sat": "" },
+        { "en": "Keep it running to save time", "hi": "", "sat": "" },
+        { "en": "Only slow it down", "hi": "", "sat": "" }
+      ],
+      "correctIndex": 0
+    }
+  ]
+}

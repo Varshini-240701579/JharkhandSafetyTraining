@@ -1,0 +1,57 @@
+{
+  "moduleId": "PPE",
+  "version": 1,
+  "passPercent": 50,
+  "questions": [
+    {
+      "id": "ppe_1",
+      "text": { "en": "What does PPE stand for?", "hi": "", "sat": "" },
+      "options": [
+        { "en": "Personal Protective Equipment", "hi": "", "sat": "" },
+        { "en": "Power Plant Equipment", "hi": "", "sat": "" },
+        { "en": "Public Property Entry", "hi": "", "sat": "" }
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "ppe_2",
+      "text": { "en": "A helmet at a worksite protects against:", "hi": "", "sat": "" },
+      "options": [
+        { "en": "Head injuries from falling objects", "hi": "", "sat": "" },
+        { "en": "Sun exposure only", "hi": "", "sat": "" },
+        { "en": "Nothing important", "hi": "", "sat": "" }
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "ppe_3",
+      "text": { "en": "When should safety gloves be worn?", "hi": "", "sat": "" },
+      "options": [
+        { "en": "Only when convenient", "hi": "", "sat": "" },
+        { "en": "Whenever handling sharp or hot materials", "hi": "", "sat": "" },
+        { "en": "Never, they slow you down", "hi": "", "sat": "" }
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "ppe_4",
+      "text": { "en": "What should you do if your PPE is damaged?", "hi": "", "sat": "" },
+      "options": [
+        { "en": "Keep using it as normal", "hi": "", "sat": "" },
+        { "en": "Report it and get it replaced", "hi": "", "sat": "" },
+        { "en": "Ignore the damage", "hi": "", "sat": "" }
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "ppe_5",
+      "text": { "en": "Safety goggles are mainly used to protect:", "hi": "", "sat": "" },
+      "options": [
+        { "en": "Your eyes from dust and debris", "hi": "", "sat": "" },
+        { "en": "Your feet", "hi": "", "sat": "" },
+        { "en": "Your hearing", "hi": "", "sat": "" }
+      ],
+      "correctIndex": 0
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "moduleId": "GAS",
+  "version": 1,
+  "passPercent": 50,
+  "questions": [
+    {
+      "id": "gas_1",
+      "text": { "en": "What should you do if you smell gas in the work area?", "hi": "", "sat": "" },
+      "options": [
+        { "en": "Light a match to check the source", "hi": "", "sat": "" },
+        { "en": "Report it immediately and move to fresh air", "hi": "", "sat": "" },
+        { "en": "Ignore it and continue working", "hi": "", "sat": "" }
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "gas_2",
+      "text": { "en": "Which device is used to detect dangerous gas levels?", "hi": "", "sat": "" },
+      "options": [
+        { "en": "Gas detector", "hi": "", "sat": "" },
+        { "en": "Torch light", "hi": "", "sat": "" },
+        { "en": "Helmet", "hi": "", "sat": "" }
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "gas_3",
+      "text": { "en": "What is a common danger of gas buildup in enclosed spaces?", "hi": "", "sat": "" },
+      "options": [
+        { "en": "Better visibility", "hi": "", "sat": "" },
+        { "en": "Explosion or suffocation risk", "hi": "", "sat": "" },
+        { "en": "No danger at all", "hi": "", "sat": "" }
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "gas_4",
+      "text": { "en": "Before entering a confined space, what should be checked?", "hi": "", "sat": "" },
+      "options": [
+        { "en": "Gas levels using a detector", "hi": "", "sat": "" },
+        { "en": "Nothing, just enter", "hi": "", "sat": "" },
+        { "en": "Only the lighting", "hi": "", "sat": "" }
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "gas_5",
+      "text": { "en": "Who should you inform first if a gas leak is detected?", "hi": "", "sat": "" },
+      "options": [
+        { "en": "No one, handle it yourself", "hi": "", "sat": "" },
+        { "en": "Your supervisor or safety officer", "hi": "", "sat": "" },
+        { "en": "A co-worker not on duty", "hi": "", "sat": "" }
+      ],
+      "correctIndex": 1
+    }
+  ]
+}
