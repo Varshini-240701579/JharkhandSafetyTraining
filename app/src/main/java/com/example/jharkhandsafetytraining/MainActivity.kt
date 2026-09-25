@@ -3,18 +3,17 @@ package com.example.jharkhandsafetytraining
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.jharkhandsafetytraining.auth.AuthViewModel
 import com.example.jharkhandsafetytraining.auth.LoginScreen
 import com.example.jharkhandsafetytraining.auth.RegisterScreen
+import com.example.jharkhandsafetytraining.screens.HomeScreen
+import com.example.jharkhandsafetytraining.screens.ModuleDetailScreen
 import com.example.jharkhandsafetytraining.ui.theme.JharkhandSafetyTrainingTheme
 
 class MainActivity : ComponentActivity() {
@@ -38,6 +37,7 @@ class MainActivity : ComponentActivity() {
                             onGoToRegister = { navController.navigate("register") }
                         )
                     }
+
                     composable("register") {
                         RegisterScreen(
                             viewModel = authViewModel,
@@ -49,10 +49,29 @@ class MainActivity : ComponentActivity() {
                             onBackToLogin = { navController.popBackStack() }
                         )
                     }
+
                     composable("home") {
-                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                            Text("Home (coming next)")
-                        }
+                        HomeScreen(
+                            onModuleClick = { moduleId ->
+                                navController.navigate("module_detail/$moduleId")
+                            }
+                        )
+                    }
+
+                    composable(
+                        route = "module_detail/{moduleId}",
+                        arguments = listOf(navArgument("moduleId") { type = NavType.StringType })
+                    ) { backStackEntry ->
+                        val moduleId = backStackEntry.arguments?.getString("moduleId") ?: ""
+                        ModuleDetailScreen(
+                            moduleId = moduleId,
+                            onStartAR = {
+                                // AR team contract connects here
+                            },
+                            onStartQuiz = {
+                                // navController.navigate("quiz/$moduleId")
+                            }
+                        )
                     }
                 }
             }
