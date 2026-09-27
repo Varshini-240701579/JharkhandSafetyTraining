@@ -71,4 +71,8 @@ class AuthViewModel(app: Application) : AndroidViewModel(app) {
     fun clearError() {
         errorMessage = null
     }
+
+    fun logout() {
+        session.clearSession()
+    }
 }

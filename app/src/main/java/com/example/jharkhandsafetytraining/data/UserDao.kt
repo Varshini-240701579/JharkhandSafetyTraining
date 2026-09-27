@@ -13,6 +13,9 @@ interface UserDao {
     @Query("SELECT * FROM users WHERE phone = :phone LIMIT 1")
     suspend fun findByPhone(phone: String): User?
 
+    @Query("SELECT * FROM users WHERE id = :userId LIMIT 1")
+    suspend fun findById(userId: Long): User?
+
     @Query("UPDATE users SET language = :lang WHERE id = :userId")
     suspend fun updateLanguage(userId: Long, lang: String)
 }

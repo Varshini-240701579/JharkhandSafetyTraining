@@ -1,0 +1,54 @@
+{
+  "moduleId": "GAS",
+  "version": 1,
+  "passPercent": 50,
+  "questions": [
+    {
+      "id": "gas_1",
+      "text": {
+        "en": "What is the immediate action if your gas detector alarms in an underground coal mine?",
+        "hi": "भूमिगत कोयला खदान में गैस डिटेक्टर अलार्म बजने पर तत्काल क्या कदम उठाना चाहिए?",
+        "sat": "ᱠᱚᱭᱞᱟ ᱠᱷᱟᱫᱟᱱ ᱵᱷᱤᱛᱤᱨ ᱨᱮ ᱜᱮᱥ ᱰᱤᱴᱮᱠᱴᱚᱨ ᱜᱷᱟᱹᱱᱴᱤ ᱨᱟᱠᱟᱵ ᱞᱮᱱᱠᱷᱟᱱ ᱞᱚᱜᱚᱱ ᱪᱮᱫ ᱠᱟᱹᱢᱤ ᱞᱟᱹᱠᱛᱤᱭᱟ?"
+      },
+      "options": [
+        {
+          "en": "Ignore the alarm and finish the shift",
+          "hi": "अलार्म को अनदेखा करें और शिफ्ट पूरी करें",
+          "sat": "ᱜᱷᱟᱹᱱᱴᱤ ᱟᱞᱚᱢ ᱞᱮᱠᱷᱟᱭᱟ ᱟᱨ ᱠᱟᱹᱢᱤ ᱯᱩᱨᱟᱹᱣ ᱢᱮ"
+        },
+        {
+          "en": "Evacuate immediately toward fresh intake air and alert the supervisor",
+          "hi": "तुरंत ताजी हवा के रास्ते बाहर निकलें और सुपरवाइजर को सूचित करें",
+          "sat": "ᱞᱚᱜᱚᱱ ᱯᱷᱟᱨᱪᱟ ᱦᱚᱭ ᱥᱮᱫ ᱚᱰᱚᱠᱚᱜ ᱢᱮ ᱟᱨ ᱥᱩᱯᱚᱨᱵᱷᱟᱭᱡᱚᱨ ᱞᱟᱹᱭ ᱟᱭ ᱢᱮ"
+        },
+        {
+          "en": "Switch off the gas detector",
+          "hi": "गैस डिटेक्टर को बंद कर दें",
+          "sat": "ᱜᱮᱥ ᱰᱤᱴᱮᱠᱴᱚᱨ ᱵᱚᱸᱫᱽ ᱠᱟᱜ ᱢᱮ"
+        }
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "gas_2",
+      "text": {
+        "en": "Before entering a confined space, what must always be verified?",
+        "hi": "किसी बंद स्थान (Confined Space) में प्रवेश करने से पहले हमेशा क्या जांचना चाहिए?",
+        "sat": "ᱵᱚᱸᱫᱽ ᱡᱟᱭᱜᱟ ᱨᱮ ᱵᱚᱞᱚᱱ ᱢᱟᱲᱟᱝ ᱨᱮ ᱪᱮᱫ ᱧᱮᱞ ᱵᱤᱰᱟᱹᱣ ᱞᱟᱹᱠᱛᱤᱭᱟ?"
+      },
+      "options": [
+        {
+          "en": "Gas testing, ventilation, and a valid work permit",
+          "hi": "गैस परीक्षण, वेंटिलेशन और वैध कार्य परमिट",
+          "sat": "ᱜᱮᱥ ᱵᱤᱰᱟᱹᱣ, ᱦᱚᱭ  চলাচল ᱟᱨ ᱠᱟᱹᱢᱤ ᱨᱮᱱᱟᱜ ᱯᱟᱨᱢᱤᱴ"
+        },
+        {
+          "en": "Only whether lighting is bright enough",
+          "hi": "केवल यह कि रोशनी पर्याप्त है या नहीं",
+          "sat": "ᱠᱷᱟᱹᱞᱤ ᱢᱟᱨᱥᱟᱞ ᱢᱮᱱᱟᱜᱼᱟ ᱥᱮ ᱵᱟᱝ"
+        }
+      ],
+      "correctIndex": 0
+    }
+  ]
+}

@@ -2,6 +2,7 @@ package com.example.jharkhandsafetytraining
 
 sealed class Screen(val route: String) {
     object Login : Screen("login")
+    object Register : Screen("register")
     object LanguageSelect : Screen("language_select")
     object Home : Screen("home")
     object ModuleDetail : Screen("module_detail/{moduleId}") {
@@ -11,4 +12,5 @@ sealed class Screen(val route: String) {
         fun passModuleId(id: String) = "quiz/$id"
     }
     object Certificate : Screen("certificate")
+    object Verifier : Screen("verifier")
 }

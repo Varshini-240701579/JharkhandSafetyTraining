@@ -1,0 +1,49 @@
+{
+  "moduleId": "MACHINERY",
+  "version": 1,
+  "passPercent": 50,
+  "questions": [
+    {
+      "id": "machinery_1",
+      "text": {
+        "en": "What protocol must be followed before repairing heavy machinery or conveyors?",
+        "hi": "भारी मशीनरी या कन्वेयर की मरम्मत से पहले किस प्रक्रिया का पालन करना अनिवार्य है?",
+        "sat": "ᱢᱟᱨᱟᱝ ᱢᱮᱥᱤᱱ ᱡᱩᱛ ᱢᱟᱲᱟᱝ ᱨᱮ ᱚᱠᱟ നിയᱚᱢ ᱢᱟᱱᱟᱣ ᱞᱟᱹᱠᱛᱤᱭᱟ?"
+      },
+      "options": [
+        {
+          "en": "Lockout / Tagout (LOTO) and isolate all power sources",
+          "hi": "लॉकआउट / टैगआउट (LOTO) करें और सभी बिजली स्रोतों को बंद करें",
+          "sat": "ᱞᱚᱠᱟᱣᱩᱴ / ᱴᱮᱜᱽᱟᱣᱩᱴ (LOTO) ᱟᱨ ᱵᱤᱡᱽᱞᱤ ᱞᱟᱭᱤᱱ ᱵᱚᱸᱫᱽ ᱢᱮ"
+        },
+        {
+          "en": "Repair while the belt is moving slowly",
+          "hi": "बेल्ट को धीरे चलाते हुए मरम्मत करें",
+          "sat": "ᱢᱮᱥᱤᱱ ᱵᱟᱹᱭᱼᱵᱟᱹᱭ ᱛᱮ ᱪᱟᱹᱞᱩ ᱠᱟᱛᱮ ᱡᱩᱛ ᱢᱮ"
+        }
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "machinery_2",
+      "text": {
+        "en": "Should machine safety guards ever be removed during normal operation?",
+        "hi": "क्या सामान्य संचालन के दौरान मशीन के सुरक्षा गार्ड कभी हटाए जाने चाहिए?",
+        "sat": "ᱢᱮᱥᱤᱱ ᱪᱟᱹᱞᱩ ᱚᱠᱛᱚ ᱨᱮ ᱥᱮᱯᱷᱴᱤ ᱜᱟᱨᱰ ᱚᱪᱚᱜ ᱞᱟᱹᱠᱛᱤᱭᱟ ᱥᱮ ᱵᱟᱝ?"
+      },
+      "options": [
+        {
+          "en": "Yes, if it speeds up work",
+          "hi": "हाँ, यदि इससे काम तेज होता है",
+          "sat": "ᱦᱚᱭ, ᱡᱩᱫᱤ ᱠᱟᱹᱢᱤ ᱞᱚᱜᱚᱱ ᱦᱩᱭᱩᱜᱼᱟ"
+        },
+        {
+          "en": "No, safety guards must always remain securely in place",
+          "hi": "नहीं, सुरक्षा गार्ड हमेशा अपने स्थान पर सुरक्षित रूप से लगे रहने चाहिए",
+          "sat": "ᱵᱟᱝ, ᱥᱮᱯᱷᱴᱤ ᱜᱟᱨᱰ ᱫᱚ ᱡᱟᱣᱜᱮ ᱞᱟᱜᱟᱣ ᱠᱟᱛᱮ ᱛᱟᱦᱮᱸᱱ ᱞᱟᱹᱠᱛᱤᱭᱟ"
+        }
+      ],
+      "correctIndex": 1
+    }
+  ]
+}

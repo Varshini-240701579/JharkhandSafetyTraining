@@ -1,0 +1,49 @@
+{
+  "moduleId": "OXYGEN",
+  "version": 1,
+  "passPercent": 50,
+  "questions": [
+    {
+      "id": "oxygen_1",
+      "text": {
+        "en": "What is the minimum safe oxygen percentage required in mine air?",
+        "hi": "खदान की हवा में न्यूनतम सुरक्षित ऑक्सीजन प्रतिशत कितना होना चाहिए?",
+        "sat": "ᱠᱷᱟᱫᱟᱱ ᱦᱚᱭ ᱨᱮ ᱠᱚᱢ ᱠᱷᱚᱱ ᱠᱚᱢ ᱛᱤᱱᱟᱹᱜ ᱚᱠᱥᱤᱡᱚᱱ ᱛᱟᱦᱮᱸᱱ ᱞᱟᱹᱠᱛᱤᱭᱟ?"
+      },
+      "options": [
+        {
+          "en": "At least 19.5% oxygen",
+          "hi": "कम से कम 19.5% ऑक्सीजन",
+          "sat": "ᱠᱚᱢ ᱠᱷᱚᱱ ᱠᱚᱢ 19.5% ᱚᱠᱥᱤᱡᱚᱱ"
+        },
+        {
+          "en": "10% oxygen is enough",
+          "hi": "10% ऑक्सीजन पर्याप्त है",
+          "sat": "10% ᱚᱠᱥᱤᱡᱚᱱ ᱜᱮ ᱰᱷᱮᱨ ᱜᱮᱭᱟ"
+        }
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "oxygen_2",
+      "text": {
+        "en": "Which emergency device must you wear when escaping through oxygen-deficient air?",
+        "hi": "ऑक्सीजन की कमी वाली हवा से बाहर निकलते समय आपको कौन सा उपकरण पहनना चाहिए?",
+        "sat": "ᱚᱠᱥᱤᱡᱚᱱ ᱠᱚᱢ ᱦᱚᱭ ᱠᱷᱚᱱ ᱵᱟᱧᱪᱟᱣ ᱚᱰᱚᱠᱚᱜ ᱚᱠᱛᱚ ᱪᱮᱫ ᱦᱚᱨᱚᱜ ᱞᱟᱹᱠᱛᱤᱭᱟ?"
+      },
+      "options": [
+        {
+          "en": "A regular cloth handkerchief",
+          "hi": "एक सामान्य कपड़े का रुमाल",
+          "sat": "ᱥᱟᱫᱷᱟᱨᱚᱱ ᱞᱩᱜᱽᱲᱤ ᱨᱩᱢᱟᱹᱞ"
+        },
+        {
+          "en": "Self-Contained Self-Rescuer (SCSR) breathing apparatus",
+          "hi": "सेल्फ-कंटेंड सेल्फ-रेस्क्यूअर (SCSR) श्वसन उपकरण",
+          "sat": "ᱥᱮᱞᱯᱷ-ᱨᱮᱥᱠᱤᱭᱩᱣᱟᱨ (SCSR) ᱥᱟᱸᱦᱮᱫ ᱡᱚᱱᱛᱨᱚ"
+        }
+      ],
+      "correctIndex": 1
+    }
+  ]
+}

@@ -21,7 +21,7 @@ import androidx.room.RoomDatabase
                     context.applicationContext,
                     AppDatabase::class.java,
                     "safety_app.db"
-                ).build().also { INSTANCE = it }
+                ).fallbackToDestructiveMigration(true).build().also { INSTANCE = it }
             }
     }
 }

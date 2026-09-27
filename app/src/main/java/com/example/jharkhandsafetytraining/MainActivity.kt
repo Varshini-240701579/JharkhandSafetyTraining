@@ -3,6 +3,10 @@ package com.example.jharkhandsafetytraining
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -12,8 +16,12 @@ import androidx.navigation.navArgument
 import com.example.jharkhandsafetytraining.auth.AuthViewModel
 import com.example.jharkhandsafetytraining.auth.LoginScreen
 import com.example.jharkhandsafetytraining.auth.RegisterScreen
+import com.example.jharkhandsafetytraining.quiz.QuizViewModel
+import com.example.jharkhandsafetytraining.screens.CertificateScreen
 import com.example.jharkhandsafetytraining.screens.HomeScreen
 import com.example.jharkhandsafetytraining.screens.ModuleDetailScreen
+import com.example.jharkhandsafetytraining.screens.QuizScreen
+import com.example.jharkhandsafetytraining.screens.VerifierScreen
 import com.example.jharkhandsafetytraining.ui.theme.JharkhandSafetyTrainingTheme
 
 class MainActivity : ComponentActivity() {
@@ -23,43 +31,69 @@ class MainActivity : ComponentActivity() {
             JharkhandSafetyTrainingTheme {
                 val navController = rememberNavController()
                 val authViewModel: AuthViewModel = viewModel()
-                val start = if (authViewModel.isLoggedIn()) "home" else "login"
+                val quizViewModel: QuizViewModel = viewModel()
+                var pendingVerifierPayload by remember { mutableStateOf<String?>(null) }
 
-                NavHost(navController = navController, startDestination = start) {
-                    composable("login") {
+                val startDestination = if (authViewModel.isLoggedIn()) {
+                    Screen.Home.route
+                } else {
+                    Screen.Login.route
+                }
+
+                NavHost(navController = navController, startDestination = startDestination) {
+                    composable(Screen.Login.route) {
                         LoginScreen(
                             viewModel = authViewModel,
                             onLoggedIn = {
-                                navController.navigate("home") {
-                                    popUpTo("login") { inclusive = true }
+                                quizViewModel.refreshUserAndProgress()
+                                navController.navigate(Screen.Home.route) {
+                                    popUpTo(Screen.Login.route) { inclusive = true }
                                 }
                             },
-                            onGoToRegister = { navController.navigate("register") }
+                            onGoToRegister = {
+                                navController.navigate(Screen.Register.route)
+                            }
                         )
                     }
 
-                    composable("register") {
+                    composable(Screen.Register.route) {
                         RegisterScreen(
                             viewModel = authViewModel,
                             onRegistered = {
-                                navController.navigate("home") {
-                                    popUpTo("login") { inclusive = true }
+                                quizViewModel.refreshUserAndProgress()
+                                navController.navigate(Screen.Home.route) {
+                                    popUpTo(Screen.Login.route) { inclusive = true }
                                 }
                             },
-                            onBackToLogin = { navController.popBackStack() }
+                            onBackToLogin = {
+                                navController.popBackStack()
+                            }
                         )
                     }
 
-                    composable("home") {
+                    composable(Screen.Home.route) {
                         HomeScreen(
                             onModuleClick = { moduleId ->
-                                navController.navigate("module_detail/$moduleId")
+                                navController.navigate(Screen.ModuleDetail.passModuleId(moduleId))
+                            },
+                            onOpenCertificate = {
+                                navController.navigate(Screen.Certificate.route)
+                            },
+                            onOpenVerifier = {
+                                pendingVerifierPayload = null
+                                navController.navigate(Screen.Verifier.route)
+                            },
+                            onLogout = {
+                                authViewModel.logout()
+                                navController.navigate(Screen.Login.route) {
+                                    popUpTo(Screen.Home.route) { inclusive = true }
+                                }
                             }
                         )
                     }
 
                     composable(
-                        route = "module_detail/{moduleId}",
+                        route = Screen.ModuleDetail.route,
                         arguments = listOf(navArgument("moduleId") { type = NavType.StringType })
                     ) { backStackEntry ->
                         val moduleId = backStackEntry.arguments?.getString("moduleId") ?: ""
@@ -69,23 +103,51 @@ class MainActivity : ComponentActivity() {
                                 // AR team contract connects here
                             },
                             onStartQuiz = {
-                                // navController.navigate("quiz/$moduleId")
+                                navController.navigate(Screen.Quiz.passModuleId(moduleId))
+                            },
+                            onBack = {
+                                navController.popBackStack()
                             }
                         )
                     }
 
                     composable(
-                        route = "quiz/{moduleId}",
+                        route = Screen.Quiz.route,
                         arguments = listOf(navArgument("moduleId") { type = NavType.StringType })
                     ) { backStackEntry ->
                         val moduleId = backStackEntry.arguments?.getString("moduleId") ?: ""
                         QuizScreen(
                             moduleId = moduleId,
-                            userLanguage = "hi", // Reads Hindi by default, or "en"/"sat"
-                            onQuizPassed = { score, total ->
-                                navController.popBackStack("home", inclusive = false)
+                            userLanguage = quizViewModel.currentUser?.language ?: "hi",
+                            quizViewModel = quizViewModel,
+                            onQuizPassed = { _, _ ->
+                                navController.popBackStack(Screen.Home.route, inclusive = false)
                             },
                             onBackToModule = {
+                                navController.popBackStack()
+                            },
+                            onOpenCertificate = {
+                                navController.navigate(Screen.Certificate.route)
+                            }
+                        )
+                    }
+
+                    composable(Screen.Certificate.route) {
+                        CertificateScreen(
+                            onBack = {
+                                navController.popBackStack()
+                            },
+                            onOpenVerifier = { signedPayload ->
+                                pendingVerifierPayload = signedPayload
+                                navController.navigate(Screen.Verifier.route)
+                            }
+                        )
+                    }
+
+                    composable(Screen.Verifier.route) {
+                        VerifierScreen(
+                            initialPayload = pendingVerifierPayload,
+                            onBack = {
                                 navController.popBackStack()
                             }
                         )

@@ -1,0 +1,49 @@
+{
+  "moduleId": "FLOOD",
+  "version": 1,
+  "passPercent": 50,
+  "questions": [
+    {
+      "id": "flood_1",
+      "text": {
+        "en": "Where should you move if sudden water inundation occurs in a mine?",
+        "hi": "यदि खदान में अचानक पानी भरने (बाढ़) लगे तो आपको कहाँ जाना चाहिए?",
+        "sat": "ᱠᱷᱟᱫᱟᱱ ᱨᱮ ᱟᱪᱠᱟ ᱫᱟᱜ ᱯᱮᱨᱮᱡ ᱞᱮᱱᱠᱷᱟᱱ ᱚᱠᱟ ᱥᱮᱫ ᱪᱟᱞᱟᱜ ᱞᱟᱹᱠᱛᱤᱭᱟ?"
+      },
+      "options": [
+        {
+          "en": "Move to higher levels via designated escape routes immediately",
+          "hi": "निर्धारित बचाव मार्गों से तुरंत ऊपरी स्तर (ऊंचे स्थान) पर जाएं",
+          "sat": "ᱵᱟᱧᱪᱟᱣ ᱰᱟᱦᱟᱨ ᱛᱮ ᱞᱚᱜᱚᱱ ᱩᱥᱩᱞ ᱡᱟᱭᱜᱟ ᱥᱮᱫ ᱨᱟᱠᱟᱵ ᱢᱮ"
+        },
+        {
+          "en": "Stay at the lowest sump level",
+          "hi": "सबसे निचले स्तर पर रुकें",
+          "sat": "ᱡᱚᱛᱚ ᱠᱷᱚᱱ ᱞᱟᱛᱟᱨ ᱨᱮ ᱛᱟᱦᱮᱸᱱ ᱢᱮ"
+        }
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "flood_2",
+      "text": {
+        "en": "What early sign can indicate water seepage risk near old mine workings?",
+        "hi": "पुरानी खदान के पास पानी रिसाव के खतरे का प्रारंभिक संकेत क्या हो सकता है?",
+        "sat": "ᱢᱟᱨᱮ ᱠᱷᱟᱫᱟᱱ ᱥᱩᱨ ᱨᱮ ᱫᱟᱜ ᱡᱚᱨᱚᱜ ᱨᱮᱱᱟᱜ ᱢᱟᱲᱟᱝ ᱪᱤन्हᱟᱹ ᱫᱚ ᱪᱮᱫ ᱠᱟᱱᱟ?"
+      },
+      "options": [
+        {
+          "en": "Dry dusty coal walls",
+          "hi": "सूखी और धूल भरी कोयले की दीवारें",
+          "sat": "ᱨᱚᱦᱚᱲ ᱟᱨ धᱩᱲᱤ ᱠᱟᱸᱛ"
+        },
+        {
+          "en": "Wet strata, foul smell, and water trickling from coal seams",
+          "hi": "गीली चट्टानें, दुर्गंध और कोयले की परतों से पानी टपकना",
+          "sat": "ᱞᱚᱦᱚᱫ ᱫᱷᱤᱨᱤ, ᱵᱟᱹᱲᱤᱡ ᱥᱚ ᱟᱨ ᱠᱟᱸᱛ ᱠᱷᱚᱱ ᱫᱟᱜ ᱡᱚᱨᱚᱜ"
+        }
+      ],
+      "correctIndex": 1
+    }
+  ]
+}

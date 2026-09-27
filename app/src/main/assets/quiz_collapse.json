@@ -1,0 +1,49 @@
+{
+  "moduleId": "COLLAPSE",
+  "version": 1,
+  "passPercent": 50,
+  "questions": [
+    {
+      "id": "collapse_1",
+      "text": {
+        "en": "Which warning sign indicates potential mine roof fall or collapse?",
+        "hi": "कौन सा चेतावनी संकेत खदान की छत गिरने या धंसने की संभावना दर्शाता है?",
+        "sat": "ᱚᱠᱟ ᱪᱤन्हᱟᱹ ᱛᱮ ᱵᱟᱰᱟᱭᱚᱜᱼᱟ ᱡᱮ ᱠᱷᱟᱫᱟᱱ ᱨᱮᱱᱟᱜ ᱪᱷᱟᱛ ᱧᱩᱨᱩᱜ ᱞᱟᱹᱜᱤᱫ?"
+      },
+      "options": [
+        {
+          "en": "Cracking sounds, flaking rock (spalling), and bending roof supports",
+          "hi": "चटकने की आवाज, पत्थर के टुकड़े गिरना और छत के सपोर्ट का झुकना",
+          "sat": "ᱨᱟᱹᱯᱩᱫ ᱥᱟᱰᱮ, ᱫᱷᱤᱨᱤ ᱧᱩᱨᱩᱜ ᱟᱨ ᱠᱷᱩᱱᱴᱤ ᱠᱚ ᱞᱤᱰᱩᱨᱚᱜ"
+        },
+        {
+          "en": "Cool breeze in the tunnel",
+          "hi": "सुरंग में ठंडी हवा चलना",
+          "sat": "ᱥᱩᱨᱩᱝ ᱨᱮ ᱨᱮᱭᱟᱲ ᱦᱚᱭ ᱵᱟᱡᱟᱣ"
+        }
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "collapse_2",
+      "text": {
+        "en": "Should workers ever enter an unsupported roof area in a mine?",
+        "hi": "क्या श्रमिकों को कभी खदान में बिना सपोर्ट वाली छत के नीचे जाना चाहिए?",
+        "sat": "ᱵᱤᱱᱟᱹ ᱴᱮᱠᱟᱣ ᱟᱠᱟᱱ ᱪᱷᱟᱛ ᱞᱟᱛᱟᱨ ᱨᱮ ᱠᱟᱹᱢᱤᱭᱟᱹ ᱠᱚ ᱪᱟᱞᱟᱜ ᱞᱟᱹᱠᱛᱤᱭᱟ ᱥᱮ ᱵᱟᱝ?"
+      },
+      "options": [
+        {
+          "en": "Yes, if only for a few seconds",
+          "hi": "हाँ, यदि केवल कुछ सेकंड के लिए हो",
+          "sat": "ᱦᱚᱭ, ᱠᱤᱪᱷᱩ ᱜᱷᱟᱹᱲᱤᱡ ᱞᱟᱹᱜᱤᱫ ᱫᱚ ᱜᱟᱱᱚᱜᱼᱟ"
+        },
+        {
+          "en": "Never enter an unsupported roof area under any circumstances",
+          "hi": "किसी भी परिस्थिति में बिना सपोर्ट वाली छत के नीचे कभी न जाएं",
+          "sat": "ᱛᱤᱥ ᱨᱮᱦᱚᱸ ᱵᱤᱱᱟᱹ ᱴᱮᱠᱟᱣ ᱟᱠᱟᱱ ᱪᱷᱟᱛ ᱞᱟᱛᱟᱨ ᱫᱚ ᱟᱞᱚᱢ ᱵᱚᱞᱚᱱᱟ"
+        }
+      ],
+      "correctIndex": 1
+    }
+  ]
+}

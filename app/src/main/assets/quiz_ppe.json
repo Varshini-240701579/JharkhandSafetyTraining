@@ -1,0 +1,49 @@
+{
+  "moduleId": "PPE",
+  "version": 1,
+  "passPercent": 50,
+  "questions": [
+    {
+      "id": "ppe_1",
+      "text": {
+        "en": "Which Personal Protective Equipment (PPE) is mandatory before entering an active mine or plant?",
+        "hi": "सक्रिय खदान या संयंत्र में प्रवेश करने से पहले कौन सा व्यक्तिगत सुरक्षा उपकरण (PPE) अनिवार्य है?",
+        "sat": "ᱠᱷᱟᱫᱟᱱ ᱥᱮ ᱠᱟᱨᱠᱷᱟᱱᱟ ᱨᱮ ᱵᱚᱞᱚᱱ ᱢᱟᱲᱟᱝ ᱚᱠᱟ PPE ᱦᱚᱨᱚᱜ ᱡᱚᱨᱩᱨᱤ ᱠᱟᱱᱟ?"
+      },
+      "options": [
+        {
+          "en": "Safety helmet with cap lamp, steel-toe boots, high-visibility vest, and gloves",
+          "hi": "कैप लैंप के साथ सुरक्षा हेलमेट, स्टील-टो जूते, हाई-विजिबिलिटी जैकेट और दस्ताने",
+          "sat": "ᱵᱟᱹᱛᱤ ᱥᱟᱶ ᱦᱮᱞᱢᱮᱴ, ᱥᱮᱯᱷᱴᱤ ᱡᱩᱛᱟᱹ, ᱡᱷᱟᱞᱠᱟᱣ ᱡᱮᱠᱮᱴ ᱟᱨ ᱛᱤ ᱢोजा"
+        },
+        {
+          "en": "Sandals and casual clothes",
+          "hi": "चप्पल और साधारण कपड़े",
+          "sat": "ᱪᱚप्पल ᱟᱨ ᱥᱟᱫᱷᱟᱨᱚᱱ ᱞᱩᱜᱽᱲᱤ"
+        }
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "ppe_2",
+      "text": {
+        "en": "What should you do if your safety helmet or harness is cracked or damaged?",
+        "hi": "यदि आपका सुरक्षा हेलमेट या हार्नेस टूटा या क्षतिग्रस्त हो तो आपको क्या करना चाहिए?",
+        "sat": "ᱡᱩᱫᱤ ᱟᱢᱟᱜ ᱦᱮᱞᱢᱮᱴ ᱥᱮ ᱵᱮᱞᱴ ᱯᱷᱟᱴᱟᱣ ᱟᱠᱟᱱᱟ, ᱛᱚᱵᱮ ᱪᱮᱫ ᱠᱟᱹᱢᱤ ᱞᱟᱹᱠᱛᱤᱭᱟ?"
+      },
+      "options": [
+        {
+          "en": "Tape it and keep using it",
+          "hi": "उस पर टेप चिपकाएं और उपयोग जारी रखें",
+          "sat": "ᱴᱮᱯ ᱞᱟᱜᱟᱣ ᱠᱟᱛᱮ ᱠᱟᱹᱢᱤ ᱨᱮ ᱞᱟᱜᱟᱣ ᱢᱮ"
+        },
+        {
+          "en": "Report immediately and get a certified replacement before starting work",
+          "hi": "तुरंत रिपोर्ट करें और काम शुरू करने से पहले प्रमाणित नया उपकरण प्राप्त करें",
+          "sat": "ᱞᱚᱜᱚᱱ ᱞᱟᱹᱭ ᱢᱮ ᱟᱨ ᱠᱟᱹᱢᱤ ᱮᱦᱚᱵ ᱢᱟᱲᱟᱝ ᱨᱮ ᱱᱟᱣᱟ ᱦᱮᱞᱢᱮᱴ ᱧᱟᱢ ᱢᱮ"
+        }
+      ],
+      "correctIndex": 1
+    }
+  ]
+}
