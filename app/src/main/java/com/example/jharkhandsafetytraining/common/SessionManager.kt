@@ -16,11 +16,20 @@ class SessionManager(context: Context) {
         return if (id == -1L) null else id
     }
 
+    fun saveLanguage(languageCode: String) {
+        prefs.edit { putString(KEY_LANGUAGE, languageCode) }
+    }
+
+    fun getLanguage(default: String = "hi"): String {
+        return prefs.getString(KEY_LANGUAGE, default) ?: default
+    }
+
     fun clearSession() {
         prefs.edit { remove(KEY_USER_ID) }
     }
 
     companion object {
         private const val KEY_USER_ID = "user_id"
+        private const val KEY_LANGUAGE = "user_language"
     }
 }

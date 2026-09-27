@@ -1,8 +1,12 @@
 package com.example.jharkhandsafetytraining.screens
 
+import android.content.Context
+import android.speech.tts.TextToSpeech
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -15,8 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -25,7 +29,9 @@ import com.example.jharkhandsafetytraining.data.AppDatabase
 import com.example.jharkhandsafetytraining.data.ModuleProgress
 import com.example.jharkhandsafetytraining.data.User
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Locale
 
 val safetyModules = listOf(
     "Fire & Explosion" to "FIRE",
@@ -37,86 +43,100 @@ val safetyModules = listOf(
     "PPE Compliance" to "PPE"
 )
 
-private data class SafetyModuleSpec(
+private data class AccessibleModuleItem(
     val id: String,
-    val title: String,
-    val hindiSubtitle: String,
-    val domainTag: String,
-    val symbol: String,
-    val accentColor: Color
+    val pictogram: String,
+    val accentColor: Color,
+    val titleEn: String,
+    val titleHi: String,
+    val titleSat: String,
+    val audioPromptHi: String,
+    val audioPromptEn: String
 )
 
-private val cockpitModules = listOf(
-    SafetyModuleSpec(
+private val accessibleModules = listOf(
+    AccessibleModuleItem(
         id = "FIRE",
-        title = "Fire & Explosion Suppression",
-        hindiSubtitle = "आग और विस्फोट सुरक्षा प्रोटोकॉल",
-        domainTag = "HAZARD: FIRE-01",
-        symbol = "🔥",
-        accentColor = Color(0xFFEF4444) // Hazard Red
+        pictogram = "🔥",
+        accentColor = Color(0xFFEF4444),
+        titleEn = "Fire & Explosion Safety",
+        titleHi = "आग और विस्फोट से सुरक्षा",
+        titleSat = "ᱥᱮᱸᱜᱮᱞ ᱟᱨ ᱚᱴᱮᱡ ᱠᱷᱚᱱ ᱵᱟᱧᱪᱟᱣ",
+        audioPromptHi = "आग और विस्फोट से सुरक्षा। अलार्म बजने पर तुरंत सुरक्षित स्थान पर जाएं।",
+        audioPromptEn = "Fire and Explosion Safety. Evacuate immediately when the alarm sounds."
     ),
-    SafetyModuleSpec(
+    AccessibleModuleItem(
         id = "GAS",
-        title = "Methane Gas Detection & Venting",
-        hindiSubtitle = "मीथेन गैस रिसाव और वेंटिलेशन",
-        domainTag = "HAZARD: GAS-02",
-        symbol = "⚠",
-        accentColor = Color(0xFFF97316) // Hazard Orange
+        pictogram = "⚠",
+        accentColor = Color(0xFFF59E0B),
+        titleEn = "Gas Leak & Confined Space",
+        titleHi = "गैस रिसाव और बंद स्थान",
+        titleSat = "ᱜᱮᱥ ᱞᱤᱠ ᱟᱨ ᱵᱚᱸᱫᱽ ᱡᱟᱭᱜᱟ",
+        audioPromptHi = "गैस रिसाव और बंद स्थान सुरक्षा। खदान में जाने से पहले गैस की जांच करें।",
+        audioPromptEn = "Gas Leak and Confined Space Safety. Always check gas levels before entry."
     ),
-    SafetyModuleSpec(
+    AccessibleModuleItem(
         id = "COLLAPSE",
-        title = "Roof Strata & Mine Collapse Control",
-        hindiSubtitle = "खदान छत समर्थन और धंसाव नियंत्रण",
-        domainTag = "STRATA: COL-03",
-        symbol = "⛰",
-        accentColor = Color(0xFFF59E0B) // Amber Gold
+        pictogram = "⛰",
+        accentColor = Color(0xFFD97706),
+        titleEn = "Mine Roof Collapse Safety",
+        titleHi = "खदान छत धंसने से बचाव",
+        titleSat = "ᱠᱷᱟᱫᱟᱱ ᱪᱷᱟᱛ ᱧᱩᱨᱩᱜ ᱠᱷᱚᱱ ᱵᱟᱧᱪᱟᱣ",
+        audioPromptHi = "खदान छत धंसने से बचाव। बिना सपोर्ट वाली छत के नीचे कभी न जाएं।",
+        audioPromptEn = "Mine Roof Collapse Safety. Never stand under an unsupported mine roof."
     ),
-    SafetyModuleSpec(
+    AccessibleModuleItem(
         id = "FLOOD",
-        title = "Underground Inundation & Dewatering",
-        hindiSubtitle = "जल भराव और आपातकालीन निकासी",
-        domainTag = "HYDRO: FLD-04",
-        symbol = "🌊",
-        accentColor = Color(0xFF38BDF8) // Hydro Cyan-Blue
+        pictogram = "🌊",
+        accentColor = Color(0xFF38BDF8),
+        titleEn = "Mine Flooding & Escape",
+        titleHi = "खदान में पानी भराव से बचाव",
+        titleSat = "ᱠᱷᱟᱫᱟᱱ ᱨᱮ ᱫᱟᱜ ᱯᱮᱨᱮᱡ ᱠᱷᱚᱱ ᱵᱟᱧᱪᱟᱣ",
+        audioPromptHi = "खदान में पानी भराव से बचाव। पानी दिखने पर तुरंत ऊंचे रास्ते से बाहर निकलें।",
+        audioPromptEn = "Mine Flooding and Escape. Move to higher levels immediately if water rises."
     ),
-    SafetyModuleSpec(
+    AccessibleModuleItem(
         id = "OXYGEN",
-        title = "Oxygen Depletion & SCSR Protocol",
-        hindiSubtitle = "ऑक्सीजन की कमी और स्व-बचाव उपकरण",
-        domainTag = "ATMOS: OXY-05",
-        symbol = "O₂",
-        accentColor = Color(0xFF06B6D4) // Cyan
+        pictogram = "🫁",
+        accentColor = Color(0xFF06B6D4),
+        titleEn = "Oxygen Depletion & SCSR",
+        titleHi = "ऑक्सीजन की कमी और श्वसन यंत्र",
+        titleSat = "ᱚᱠᱥᱤᱡᱚᱱ ᱠᱚᱢᱚᱜ ᱟᱨ ᱥᱟᱸᱦᱮᱫ ᱡᱚᱱᱛᱨᱚ",
+        audioPromptHi = "ऑक्सीजन की कमी से बचाव। सांस लेने में दिक्कत होने पर सेल्फ रेस्क्यूअर पहनें।",
+        audioPromptEn = "Oxygen Depletion Safety. Wear your Self-Rescuer breathing device immediately."
     ),
-    SafetyModuleSpec(
+    AccessibleModuleItem(
         id = "MACHINERY",
-        title = "Heavy Machinery & LOTO Compliance",
-        hindiSubtitle = "भारी मशीनरी और लॉकआउट-टैगआउट",
-        domainTag = "MECH: MCH-06",
-        symbol = "⚙",
-        accentColor = Color(0xFFEAB308) // Safety Yellow
+        pictogram = "⚙",
+        accentColor = Color(0xFFEAB308),
+        titleEn = "Heavy Machinery Safety",
+        titleHi = "भारी मशीनों से सुरक्षा",
+        titleSat = "ᱢᱟᱨᱟᱝ ᱢᱮᱥᱤᱱ ᱠᱷᱚᱱ ᱵᱟᱧᱪᱟᱣ",
+        audioPromptHi = "भारी मशीनों से सुरक्षा। मरम्मत से पहले मशीन की बिजली पूरी तरह बंद करें।",
+        audioPromptEn = "Heavy Machinery Safety. Lockout and switch off power before any repair."
     ),
-    SafetyModuleSpec(
+    AccessibleModuleItem(
         id = "PPE",
-        title = "Mandatory PPE & Cap-Lamp Rig",
-        hindiSubtitle = "व्यक्तिगत सुरक्षा उपकरण अनुपालन",
-        domainTag = "EQUIP: PPE-07",
-        symbol = "🛡",
-        accentColor = Color(0xFF10B981) // Emerald
+        pictogram = "⛑",
+        accentColor = Color(0xFF10B981),
+        titleEn = "Helmet, Boots & PPE Gear",
+        titleHi = "हेलमेट, जूते और सुरक्षा कवच",
+        titleSat = "ᱦᱮᱞᱢᱮᱴ, ᱡᱩᱛᱟᱹ ᱟᱨ ᱥᱮᱯᱷᱴᱤ ᱞᱩᱜᱽᱲᱤ",
+        audioPromptHi = "हेलमेट, जूते और सुरक्षा कवच। काम शुरू करने से पहले पूरा पीपीई पहनें।",
+        audioPromptEn = "Helmet, Boots and PPE Gear. Wear all protective gear before starting work."
     )
 )
 
-// Industrial Cockpit Palette
-private val CockpitBg = Color(0xFF121418)
-private val SlateCard = Color(0xFF1E222B)
-private val SlateCardElevated = Color(0xFF252A36)
-private val SlateBorder = Color(0xFF374151)
-private val SafetyAmber = Color(0xFFFFB300)
-private val ActionAmber = Color(0xFFD97706)
-private val CertifiedGreen = Color(0xFF10B981)
-private val CertifiedGreenBg = Color(0xFF064E3B)
-private val AmberBadgeBg = Color(0xFF451A03)
-private val MutedText = Color(0xFF9CA3AF)
-private val SubtleGrayBadge = Color(0xFF1F2937)
+// High-Visibility Accessible Color Palette (PS-26041)
+private val WarmCharcoalBg = Color(0xFF12141A)
+private val CardSurface = Color(0xFF1C2029)
+private val CardBorder = Color(0xFF333A48)
+private val SafetyWarningYellow = Color(0xFFF59E0B)
+private val HighContrastWhite = Color(0xFFFFFFFF)
+private val ComplianceGreen = Color(0xFF10B981)
+private val ComplianceGreenDarkBg = Color(0xFF064E3B)
+private val PendingAmberDarkBg = Color(0xFF451A03)
+private val SoftSilverText = Color(0xFFD1D5DB)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -127,42 +147,84 @@ fun HomeScreen(
     onLogout: (() -> Unit)? = null
 ) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val prefs = remember { context.getSharedPreferences("session_prefs", Context.MODE_PRIVATE) }
+
+    var selectedLanguage by remember {
+        mutableStateOf(prefs.getString("user_language", "hi") ?: "hi")
+    }
     var currentUser by remember { mutableStateOf<User?>(null) }
     var progressMap by remember { mutableStateOf<Map<String, ModuleProgress>>(emptyMap()) }
     var showSignOutDialog by remember { mutableStateOf(false) }
+
+    // Optional Android TextToSpeech for Audio-Visual Accessibility ("🔊")
+    var ttsEngine by remember { mutableStateOf<TextToSpeech?>(null) }
+    DisposableEffect(context) {
+        var engine: TextToSpeech? = null
+        engine = TextToSpeech(context) { status ->
+            if (status == TextToSpeech.SUCCESS) {
+                engine?.language = Locale.forLanguageTag("hi-IN")
+            }
+        }
+        ttsEngine = engine
+        onDispose {
+            engine?.stop()
+            engine?.shutdown()
+        }
+    }
+
+    fun speakModuleAudio(item: AccessibleModuleItem) {
+        val textToSpeak = if (selectedLanguage == "en") item.audioPromptEn else item.audioPromptHi
+        val locale = if (selectedLanguage == "en") Locale.US else Locale.forLanguageTag("hi-IN")
+        ttsEngine?.language = locale
+        ttsEngine?.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, item.id)
+        Toast.makeText(context, "🔊 $textToSpeak", Toast.LENGTH_SHORT).show()
+    }
+
+    fun onSelectLanguage(langCode: String) {
+        selectedLanguage = langCode
+        prefs.edit().putString("user_language", langCode).apply()
+        scope.launch(Dispatchers.IO) {
+            val db = AppDatabase.getInstance(context)
+            val userId = SessionManager(context).getUserId() ?: 1L
+            db.userDao().updateLanguage(userId, langCode)
+        }
+    }
 
     LaunchedEffect(Unit) {
         withContext(Dispatchers.IO) {
             val db = AppDatabase.getInstance(context)
             val userId = SessionManager(context).getUserId() ?: 1L
-            currentUser = db.userDao().findById(userId)
+            val loadedUser = db.userDao().findById(userId)
+            currentUser = loadedUser
+            if (loadedUser?.language?.isNotBlank() == true && !prefs.contains("user_language")) {
+                selectedLanguage = loadedUser.language
+            }
             val list = db.trainingDao().getProgress(userId)
             progressMap = list.associateBy { it.moduleId.uppercase() }
         }
     }
 
-    val passedCount = cockpitModules.count { spec -> progressMap[spec.id]?.quizPassed == true }
-    val arReadyCount = cockpitModules.count { spec -> progressMap[spec.id]?.arCompleted == true }
-    val totalCount = cockpitModules.size
-    val completionRatio = if (totalCount == 0) 0f else passedCount.toFloat() / totalCount.toFloat()
-    val isFullyCertified = passedCount == totalCount
+    val passedCount = accessibleModules.count { progressMap[it.id]?.quizPassed == true }
+    val totalCount = accessibleModules.size
+    val progressRatio = if (totalCount == 0) 0f else passedCount.toFloat() / totalCount.toFloat()
 
     // Sign Out Confirmation Dialog
     if (showSignOutDialog && onLogout != null) {
         AlertDialog(
             onDismissRequest = { showSignOutDialog = false },
-            containerColor = SlateCard,
-            titleContentColor = Color.White,
-            textContentColor = MutedText,
+            containerColor = CardSurface,
+            titleContentColor = HighContrastWhite,
+            textContentColor = SoftSilverText,
             title = {
                 Text(
-                    text = "Confirm Operator Sign Out",
+                    text = "लॉग आउट / Sign Out?",
                     fontWeight = FontWeight.Bold
                 )
             },
             text = {
                 Text(
-                    text = "Are you sure you want to sign out of the Jharkhand Mine Safety Cockpit? Your offline progress and certificates remain securely stored on this device."
+                    text = "क्या आप लॉग आउट करना चाहते हैं? / Do you want to sign out?"
                 )
             },
             confirmButton = {
@@ -173,7 +235,7 @@ fun HomeScreen(
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFFDC2626),
-                        contentColor = Color.White
+                        contentColor = HighContrastWhite
                     )
                 ) {
                     Text("Sign Out", fontWeight = FontWeight.Bold)
@@ -182,8 +244,8 @@ fun HomeScreen(
             dismissButton = {
                 OutlinedButton(
                     onClick = { showSignOutDialog = false },
-                    border = BorderStroke(1.dp, SlateBorder),
-                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White)
+                    border = BorderStroke(1.dp, CardBorder),
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = HighContrastWhite)
                 ) {
                     Text("Cancel")
                 }
@@ -191,140 +253,190 @@ fun HomeScreen(
         )
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(CockpitBg)
-    ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .statusBarsPadding()
-                .padding(horizontal = 16.dp),
-            contentPadding = PaddingValues(top = 16.dp, bottom = 28.dp),
-            verticalArrangement = Arrangement.spacedBy(14.dp)
-        ) {
-            // 1. Top Industrial Operator Header
-            item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = SlateCard),
-                    border = BorderStroke(1.dp, SlateBorder)
+    Scaffold(
+        containerColor = WarmCharcoalBg,
+        topBar = {
+            Surface(
+                color = CardSurface,
+                shadowElevation = 6.dp
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .statusBarsPadding()
+                        .padding(horizontal = 16.dp, vertical = 12.dp)
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
+                    // Top Row: Title + OFFLINE VERIFIER Icon-Button + Sign Out
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = when (selectedLanguage) {
+                                    "hi" -> "झारखंड खान सुरक्षा"
+                                    "sat" -> "ᱡᱷᱟᱨᱠᱷᱚᱸᱰ ᱠᱷᱟᱫᱟᱱ ᱥᱮᱯᱷᱴᱤ"
+                                    else -> "Jharkhand Mine Safety"
+                                },
+                                color = HighContrastWhite,
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.ExtraBold
+                            )
+                            currentUser?.let { worker ->
+                                Text(
+                                    text = "⛑ ${worker.name}",
+                                    color = SafetyWarningYellow,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                            }
+                        }
+
                         Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            // Mine Zone Badge
-                            Surface(
-                                color = SafetyAmber.copy(alpha = 0.14f),
-                                shape = RoundedCornerShape(6.dp),
-                                border = BorderStroke(1.dp, SafetyAmber.copy(alpha = 0.5f))
+                            // "OFFLINE VERIFIER" Icon-Button in Top Header
+                            OutlinedButton(
+                                onClick = onOpenVerifier,
+                                shape = RoundedCornerShape(10.dp),
+                                border = BorderStroke(1.5.dp, SafetyWarningYellow),
+                                colors = ButtonDefaults.outlinedButtonColors(
+                                    containerColor = WarmCharcoalBg,
+                                    contentColor = SafetyWarningYellow
+                                ),
+                                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
+                                modifier = Modifier.height(42.dp)
                             ) {
                                 Text(
-                                    text = "⛏ DHANBAD COALFIELD DIV-IV",
-                                    color = SafetyAmber,
-                                    style = MaterialTheme.typography.labelSmall,
-                                    fontWeight = FontWeight.Bold,
-                                    letterSpacing = 0.8.sp,
-                                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
+                                    text = "🔍 OFFLINE VERIFIER",
+                                    style = MaterialTheme.typography.labelMedium,
+                                    fontWeight = FontWeight.ExtraBold
                                 )
                             }
 
                             if (onLogout != null) {
                                 OutlinedButton(
                                     onClick = { showSignOutDialog = true },
-                                    shape = RoundedCornerShape(8.dp),
-                                    border = BorderStroke(1.dp, SlateBorder),
+                                    shape = RoundedCornerShape(10.dp),
+                                    border = BorderStroke(1.dp, CardBorder),
                                     colors = ButtonDefaults.outlinedButtonColors(
-                                        containerColor = CockpitBg,
-                                        contentColor = MutedText
+                                        containerColor = WarmCharcoalBg,
+                                        contentColor = SoftSilverText
                                     ),
-                                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
-                                    modifier = Modifier.height(32.dp)
+                                    contentPadding = PaddingValues(horizontal = 10.dp, vertical = 8.dp),
+                                    modifier = Modifier.height(42.dp)
                                 ) {
                                     Text(
-                                        text = "Sign Out",
-                                        style = MaterialTheme.typography.labelSmall,
-                                        fontWeight = FontWeight.SemiBold
+                                        text = "⏻",
+                                        fontSize = 16.sp,
+                                        fontWeight = FontWeight.Bold
                                     )
                                 }
                             }
                         }
+                    }
 
-                        Spacer(modifier = Modifier.height(14.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
 
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            // Operator Monogram Avatar Badge
-                            val workerName = currentUser?.name?.takeIf { it.isNotBlank() } ?: "Mine Operator"
-                            val initials = workerName
-                                .split(" ")
-                                .filter { it.isNotBlank() }
-                                .take(2)
-                                .joinToString("") { it.first().uppercase() }
-                                .ifEmpty { "MO" }
-
-                            Box(
+                    // 1. Persistent Trilingual Bar (Top of Screen)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(WarmCharcoalBg, RoundedCornerShape(12.dp))
+                            .border(1.dp, CardBorder, RoundedCornerShape(12.dp))
+                            .padding(4.dp),
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        val languages = listOf(
+                            "en" to "English",
+                            "hi" to "हिन्दी (Hindi)",
+                            "sat" to "संताली (Santali)"
+                        )
+                        languages.forEach { (code, label) ->
+                            val isSelected = selectedLanguage == code
+                            Surface(
+                                onClick = { onSelectLanguage(code) },
+                                shape = RoundedCornerShape(9.dp),
+                                color = if (isSelected) SafetyWarningYellow else Color.Transparent,
                                 modifier = Modifier
-                                    .size(48.dp)
-                                    .clip(CircleShape)
-                                    .background(SlateCardElevated)
-                                    .border(1.5.dp, SafetyAmber, CircleShape),
-                                contentAlignment = Alignment.Center
+                                    .weight(1f)
+                                    .height(42.dp)
                             ) {
-                                Text(
-                                    text = initials,
-                                    color = SafetyAmber,
-                                    style = MaterialTheme.typography.titleMedium,
-                                    fontWeight = FontWeight.ExtraBold
-                                )
-                            }
-
-                            Spacer(modifier = Modifier.width(14.dp))
-
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = workerName,
-                                    color = Color.White,
-                                    style = MaterialTheme.typography.titleMedium,
-                                    fontWeight = FontWeight.Bold
-                                )
-                                Spacer(modifier = Modifier.height(2.dp))
-                                val workerPhone = currentUser?.phone ?: "ID-OFFLINE"
-                                val workerRole = currentUser?.role ?: "WORKER"
-                                Text(
-                                    text = "MINE OPERATOR / $workerRole • 📞 $workerPhone",
-                                    color = MutedText,
-                                    style = MaterialTheme.typography.labelMedium,
-                                    fontFamily = FontFamily.Monospace
-                                )
+                                Box(contentAlignment = Alignment.Center) {
+                                    Text(
+                                        text = label,
+                                        color = if (isSelected) Color(0xFF12141A) else HighContrastWhite,
+                                        style = MaterialTheme.typography.labelLarge,
+                                        fontWeight = FontWeight.ExtraBold,
+                                        textAlign = TextAlign.Center,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+                                }
                             }
                         }
                     }
                 }
             }
-
-            // 2. Certification Gauge Card
+        },
+        // 4. Clear Action Footer: Prominent Large DGMS Certificate Button
+        bottomBar = {
+            Surface(
+                color = CardSurface,
+                shadowElevation = 12.dp,
+                border = BorderStroke(1.dp, CardBorder)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .navigationBarsPadding()
+                        .padding(horizontal = 16.dp, vertical = 12.dp)
+                ) {
+                    Button(
+                        onClick = onOpenCertificate,
+                        shape = RoundedCornerShape(14.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = if (passedCount == totalCount) ComplianceGreen else SafetyWarningYellow,
+                            contentColor = Color(0xFF12141A)
+                        ),
+                        elevation = ButtonDefaults.buttonElevation(defaultElevation = 6.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(58.dp)
+                    ) {
+                        Text(
+                            text = "🎓 MY DGMS CERTIFICATE / मेरा प्रमाणपत्र",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+            }
+        }
+    ) { padding ->
+        // 2. De-congested, Card-Based Industrial Cockpit with >= 16dp Vertical Spacing
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(WarmCharcoalBg)
+                .padding(padding)
+                .padding(horizontal = 16.dp),
+            contentPadding = PaddingValues(top = 18.dp, bottom = 24.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            // Simple, High-Contrast Visual Progress Summary Banner
             item {
-                val borderAccent = if (isFullyCertified) CertifiedGreen else SafetyAmber
-                val trackFillColor = if (isFullyCertified) CertifiedGreen else SafetyAmber
-
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = SlateCard),
-                    border = BorderStroke(1.5.dp, borderAccent.copy(alpha = 0.85f)),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
+                    colors = CardDefaults.cardColors(containerColor = CardSurface),
+                    border = BorderStroke(
+                        width = 1.5.dp,
+                        color = if (passedCount == totalCount) ComplianceGreen else SafetyWarningYellow
+                    )
                 ) {
                     Column(
                         modifier = Modifier
@@ -336,37 +448,35 @@ fun HomeScreen(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = "SAFETY CERTIFICATION TELEMETRY",
-                                    color = borderAccent,
-                                    style = MaterialTheme.typography.labelSmall,
-                                    fontWeight = FontWeight.Bold,
-                                    letterSpacing = 1.sp
-                                )
-                                Spacer(modifier = Modifier.height(4.dp))
-                                Text(
-                                    text = "$passedCount / $totalCount Modules Completed",
-                                    color = Color.White,
-                                    style = MaterialTheme.typography.titleLarge,
-                                    fontWeight = FontWeight.ExtraBold
-                                )
-                            }
+                            Text(
+                                text = when (selectedLanguage) {
+                                    "hi" -> "प्रशिक्षण प्रगति (Training Progress)"
+                                    "sat" -> "ᱴᱨᱮᱱᱤᱝ ᱯᱨᱚᱜᱨᱮᱥ (Training Progress)"
+                                    else -> "Safety Training Progress"
+                                },
+                                color = HighContrastWhite,
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold
+                            )
 
-                            // Circular Percentage Readout Pill
-                            val percentInt = (completionRatio * 100).toInt()
                             Surface(
-                                color = borderAccent.copy(alpha = 0.15f),
-                                shape = RoundedCornerShape(12.dp),
-                                border = BorderStroke(1.dp, borderAccent.copy(alpha = 0.6f))
+                                color = if (passedCount == totalCount) {
+                                    ComplianceGreenDarkBg
+                                } else {
+                                    PendingAmberDarkBg
+                                },
+                                shape = RoundedCornerShape(8.dp),
+                                border = BorderStroke(
+                                    width = 1.dp,
+                                    color = if (passedCount == totalCount) ComplianceGreen else SafetyWarningYellow
+                                )
                             ) {
                                 Text(
-                                    text = "$percentInt%",
-                                    color = borderAccent,
+                                    text = "$passedCount / $totalCount",
+                                    color = if (passedCount == totalCount) ComplianceGreen else SafetyWarningYellow,
                                     style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.ExtraBold,
-                                    fontFamily = FontFamily.Monospace,
-                                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
+                                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
                                 )
                             }
                         }
@@ -374,126 +484,28 @@ fun HomeScreen(
                         Spacer(modifier = Modifier.height(12.dp))
 
                         LinearProgressIndicator(
-                            progress = { completionRatio },
-                            color = trackFillColor,
-                            trackColor = Color(0xFF0F1115),
+                            progress = { progressRatio },
+                            color = if (passedCount == totalCount) ComplianceGreen else SafetyWarningYellow,
+                            trackColor = WarmCharcoalBg,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(10.dp)
-                                .clip(RoundedCornerShape(5.dp))
+                                .height(12.dp)
+                                .clip(RoundedCornerShape(6.dp))
                         )
-
-                        Spacer(modifier = Modifier.height(10.dp))
-
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Text(
-                                text = if (isFullyCertified) {
-                                    "✓ All mandatory mine safety modules verified"
-                                } else {
-                                    "Complete all 7 modules for master HMAC QR clearance"
-                                },
-                                color = MutedText,
-                                style = MaterialTheme.typography.bodySmall
-                            )
-                            Text(
-                                text = "AR Ready: $arReadyCount/$totalCount",
-                                color = SafetyAmber,
-                                style = MaterialTheme.typography.labelSmall,
-                                fontFamily = FontFamily.Monospace
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        // Quick Access Action Buttons
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(10.dp)
-                        ) {
-                            Button(
-                                onClick = onOpenCertificate,
-                                shape = RoundedCornerShape(10.dp),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = ActionAmber,
-                                    contentColor = Color.White
-                                ),
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .height(46.dp)
-                            ) {
-                                Text(
-                                    text = "My Certificates (QR)",
-                                    style = MaterialTheme.typography.labelLarge,
-                                    fontWeight = FontWeight.Bold,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis
-                                )
-                            }
-
-                            OutlinedButton(
-                                onClick = onOpenVerifier,
-                                shape = RoundedCornerShape(10.dp),
-                                border = BorderStroke(1.dp, SafetyAmber),
-                                colors = ButtonDefaults.outlinedButtonColors(
-                                    containerColor = CockpitBg,
-                                    contentColor = SafetyAmber
-                                ),
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .height(46.dp)
-                            ) {
-                                Text(
-                                    text = "Offline Verifier",
-                                    style = MaterialTheme.typography.labelLarge,
-                                    fontWeight = FontWeight.Bold,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis
-                                )
-                            }
-                        }
                     }
                 }
             }
 
-            // Section Header for Modules
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 4.dp, bottom = 2.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "CORE HAZARD & SAFETY DOMAINS",
-                        color = MutedText,
-                        style = MaterialTheme.typography.labelMedium,
-                        fontWeight = FontWeight.Bold,
-                        letterSpacing = 1.sp
-                    )
-                    Text(
-                        text = "TAP TO LAUNCH →",
-                        color = SafetyAmber,
-                        style = MaterialTheme.typography.labelSmall,
-                        fontFamily = FontFamily.Monospace
-                    )
-                }
-            }
+            // 3. Accessible Module Cards (Audio-Visual First, >= 90dp Height)
+            items(accessibleModules, key = { it.id }) { item ->
+                val isPassed = progressMap[item.id]?.quizPassed == true
 
-            // 3. Modernized Module Cards
-            items(cockpitModules, key = { it.id }) { spec ->
-                val moduleProg = progressMap[spec.id]
-                val quizPassed = moduleProg?.quizPassed == true
-                val arCompleted = moduleProg?.arCompleted == true
-
-                CockpitModuleCard(
-                    spec = spec,
-                    quizPassed = quizPassed,
-                    arCompleted = arCompleted,
-                    onClick = { onModuleClick(spec.id) }
+                AccessibleSafetyModuleCard(
+                    item = item,
+                    selectedLanguage = selectedLanguage,
+                    isPassed = isPassed,
+                    onCardClick = { onModuleClick(item.id) },
+                    onSpeakClick = { speakModuleAudio(item) }
                 )
             }
         }
@@ -501,164 +513,127 @@ fun HomeScreen(
 }
 
 @Composable
-private fun CockpitModuleCard(
-    spec: SafetyModuleSpec,
-    quizPassed: Boolean,
-    arCompleted: Boolean,
-    onClick: () -> Unit
+private fun AccessibleSafetyModuleCard(
+    item: AccessibleModuleItem,
+    selectedLanguage: String,
+    isPassed: Boolean,
+    onCardClick: () -> Unit,
+    onSpeakClick: () -> Unit
 ) {
-    val badgeText: String
-    val badgeTextColor: Color
-    val badgeBgColor: Color
-    val badgeBorderColor: Color
-
-    when {
-        quizPassed -> {
-            badgeText = "✓ CERTIFIED"
-            badgeTextColor = Color(0xFF34D399)
-            badgeBgColor = CertifiedGreenBg.copy(alpha = 0.7f)
-            badgeBorderColor = CertifiedGreen
-        }
-        arCompleted -> {
-            badgeText = "AR READY • PENDING EXAM"
-            badgeTextColor = SafetyAmber
-            badgeBgColor = AmberBadgeBg.copy(alpha = 0.8f)
-            badgeBorderColor = SafetyAmber
-        }
-        else -> {
-            badgeText = "NOT STARTED"
-            badgeTextColor = MutedText
-            badgeBgColor = SubtleGrayBadge
-            badgeBorderColor = SlateBorder
-        }
+    // Primary title in selected language, secondary in English (or Hindi if English is selected)
+    val primaryTitle = when (selectedLanguage) {
+        "hi" -> item.titleHi
+        "sat" -> item.titleSat
+        else -> item.titleEn
+    }
+    val secondaryTitle = when (selectedLanguage) {
+        "en" -> item.titleHi
+        else -> item.titleEn
     }
 
     Card(
-        onClick = onClick,
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(14.dp),
-        colors = CardDefaults.cardColors(containerColor = SlateCard),
+        onClick = onCardClick,
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 98.dp),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = CardSurface),
         border = BorderStroke(
-            width = 1.dp,
-            color = if (quizPassed) CertifiedGreen.copy(alpha = 0.5f) else SlateBorder
+            width = 1.5.dp,
+            color = if (isPassed) ComplianceGreen else CardBorder
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(IntrinsicSize.Min),
+                .padding(horizontal = 16.dp, vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Left Safety Category Accent Strip
+            // Large, Clear Hazard Category Pictogram on Left
             Box(
                 modifier = Modifier
-                    .width(6.dp)
-                    .fillMaxHeight()
-                    .background(spec.accentColor)
-            )
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 14.dp, vertical = 14.dp),
-                verticalAlignment = Alignment.CenterVertically
+                    .size(62.dp)
+                    .clip(RoundedCornerShape(14.dp))
+                    .background(item.accentColor.copy(alpha = 0.18f))
+                    .border(
+                        width = 1.5.dp,
+                        color = item.accentColor,
+                        shape = RoundedCornerShape(14.dp)
+                    ),
+                contentAlignment = Alignment.Center
             ) {
-                // Category Emblem Placeholder
-                Box(
-                    modifier = Modifier
-                        .size(46.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(spec.accentColor.copy(alpha = 0.15f))
-                        .border(
-                            width = 1.dp,
-                            color = spec.accentColor.copy(alpha = 0.5f),
-                            shape = RoundedCornerShape(10.dp)
-                        ),
-                    contentAlignment = Alignment.Center
+                Text(
+                    text = item.pictogram,
+                    fontSize = 30.sp
+                )
+            }
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            // Dual-Language Title + Prominent Status Indicator Pill
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = primaryTitle,
+                    color = HighContrastWhite,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    lineHeight = 23.sp
+                )
+
+                Spacer(modifier = Modifier.height(3.dp))
+
+                Text(
+                    text = secondaryTitle,
+                    color = SoftSilverText,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Medium
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                // Prominent, Simplified Status Pill
+                Surface(
+                    color = if (isPassed) ComplianceGreenDarkBg else PendingAmberDarkBg,
+                    shape = RoundedCornerShape(50),
+                    border = BorderStroke(
+                        width = 1.dp,
+                        color = if (isPassed) ComplianceGreen else SafetyWarningYellow
+                    )
                 ) {
                     Text(
-                        text = spec.symbol,
-                        color = spec.accentColor,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.ExtraBold
+                        text = if (isPassed) {
+                            "✓ PASSED / प्रमाणित"
+                        } else {
+                            "DRILL PENDING / अभ्यास शेष"
+                        },
+                        color = if (isPassed) Color(0xFF34D399) else SafetyWarningYellow,
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.ExtraBold,
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 5.dp)
                     )
                 }
+            }
 
-                Spacer(modifier = Modifier.width(14.dp))
+            Spacer(modifier = Modifier.width(12.dp))
 
-                // Module Title, Hindi Subtitle, Domain Tag, and Status Badge
-                Column(modifier = Modifier.weight(1f)) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        // Domain Tag Chip
-                        Surface(
-                            color = CockpitBg,
-                            shape = RoundedCornerShape(4.dp),
-                            border = BorderStroke(1.dp, spec.accentColor.copy(alpha = 0.45f))
-                        ) {
-                            Text(
-                                text = spec.domainTag,
-                                color = spec.accentColor,
-                                style = MaterialTheme.typography.labelSmall,
-                                fontFamily = FontFamily.Monospace,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
-                            )
-                        }
-
-                        // Status Badge
-                        Surface(
-                            color = badgeBgColor,
-                            shape = RoundedCornerShape(4.dp),
-                            border = BorderStroke(1.dp, badgeBorderColor.copy(alpha = 0.7f))
-                        ) {
-                            Text(
-                                text = badgeText,
-                                color = badgeTextColor,
-                                style = MaterialTheme.typography.labelSmall,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(6.dp))
-
-                    Text(
-                        text = spec.title,
-                        color = Color.White,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-
-                    Text(
-                        text = spec.hindiSubtitle,
-                        color = MutedText,
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                }
-
-                Spacer(modifier = Modifier.width(10.dp))
-
-                // Subtle Forward Chevron Indicator
-                Box(
-                    modifier = Modifier
-                        .size(32.dp)
-                        .clip(CircleShape)
-                        .background(CockpitBg)
-                        .border(1.dp, SlateBorder, CircleShape),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "→",
-                        color = SafetyAmber,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
+            // Speaker Button ("🔊") for Audio Narration Playback
+            Box(
+                modifier = Modifier
+                    .size(52.dp)
+                    .clip(CircleShape)
+                    .background(SafetyWarningYellow.copy(alpha = 0.16f))
+                    .border(1.5.dp, SafetyWarningYellow, CircleShape)
+                    .clickable(onClick = onSpeakClick),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "🔊",
+                    fontSize = 22.sp
+                )
             }
         }
     }
