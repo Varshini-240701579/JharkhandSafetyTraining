@@ -22,5 +22,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "JharkhandSafetyTraining"
+rootProject.name = "AR Mining Safety"
 include(":app")
